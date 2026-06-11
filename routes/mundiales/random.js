@@ -1,6 +1,5 @@
-import data from "../../data/data.json" with { type: "json" };
+import * as mundial from "../../data/mundiales.js";
 
-export function random(req, res) {
-  const mundial = data[Math.floor(Math.random() * data.length)];
-  res.json(mundial);
-}
+export const random = (req, res) => {
+  res.json(mundial.getRandom());
+};

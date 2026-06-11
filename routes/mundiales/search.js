@@ -1,11 +1,17 @@
-import data from "../../data/data.json" with { type: "json" };
+import * as mundial from "../../data/mundiales.js";
+import { z } from "zod";
 
-export function search(req, res) {
-  const text = req.params.text.toLowerCase();
-  const campos = ["nombre", "sede", "campeon", "subcampeon", "goleador"];
-  const resultados = data.filter(m =>
-    campos.some(campo => m[campo].toLowerCase().includes(text))
-  );
-  if (!resultados.length) return res.status(404).json({ error: "Sin resultados" });
-  res.json(resultados);
-}
+const schema = z.object({
+  text: z.string().min(3, "El texto de búsqueda debe tener al menos 3 caracteres")
+});
+
+export const search = (req, res) => {
+  const validation = schema.safeParse(req.params);
+  if (!validation.success) {
+    return res.status(400).json({ error: validation.error.issues[0].message });
+  }
+
+  const result = mundial.search(req.params.text);
+  if (!result.length) return res.status(404).json({ error: "Sin resultados" });
+  res.json(result);
+};

@@ -1,5 +1,9 @@
-import data from "../../data/data.json" with { type: "json" };
+import * as mundial from "../../data/mundiales.js";
 
-export function getAll(req, res) {
-  res.json(data);
-}
+export const getAll = (req, res) => {
+  const isFull = req.query.include === "full";
+  const contents = isFull
+    ? mundial.getAll()
+    : mundial.getAll().map(item => item.slug);
+  res.json(contents);
+};

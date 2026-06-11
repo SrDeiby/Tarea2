@@ -1,10 +1,7 @@
-import data from "../../data/data.json" with { type: "json" };
+import * as mundial from "../../data/mundiales.js";
 
-export function Campeon(req, res) {
-  const pais = req.params.pais.toLowerCase();
-  const slugs = data
-    .filter(m => m.campeon.toLowerCase() === pais)
-    .map(m => m.slug);
-  if (!slugs.length) return res.status(404).json({ error: "Ningún Mundial encontrado para ese país" });
-  res.json(slugs);
-}
+export const getCampeon = (req, res) => {
+  const result = mundial.getByCampeon(req.params.pais);
+  if (!result.length) return res.status(404).json({ error: "Ningún Mundial encontrado para ese país" });
+  res.json(result.map(item => item.slug));
+};

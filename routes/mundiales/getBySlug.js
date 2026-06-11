@@ -1,8 +1,7 @@
-import data from "../../data/data.json" with { type: "json" };
+import * as mundial from "../../data/mundiales.js";
 
-export function getBySlug(req, res) {
-  const slug = req.params.slug.toLowerCase();
-  const mundial = data.find(m => m.slug.toLowerCase() === slug);
-  if (!mundial) return res.status(404).json({ error: "Mundial no encontrado" });
-  res.json(mundial);
-}
+export const getBySlug = (req, res) => {
+  const result = mundial.getBySlug(req.params.slug);
+  if (!result) return res.status(404).json({ error: "Mundial no encontrado" });
+  res.json(result);
+};
